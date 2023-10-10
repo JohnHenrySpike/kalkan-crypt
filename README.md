@@ -1,5 +1,5 @@
 ## KalkanCrypt wrapper
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/JohnHenrySpike/kalkancrypt/php.yml)
+[![PhpUnit](https://github.com/JohnHenrySpike/kalkan-crypt/actions/workflows/php.yml/badge.svg)](https://github.com/JohnHenrySpike/kalkan-crypt/actions/workflows/php.yml)
 
 Wrapper for cryptographic library KalkanCrypt(PHP)
 
