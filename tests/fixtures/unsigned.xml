@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<root>
+    <sign_place/>
+    <customers>
+        <customer id="sign-this-data">
+            <name>Charter Group</name>
+            <address>
+                <street>100 Main</street>
+                <city>Framingham</city>
+                <state>MA</state>
+                <zip>01701</zip>
+            </address>
+        </customer>
+    </customers>
+</root>

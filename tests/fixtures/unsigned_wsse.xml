@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Body id="sign-this-data">
+        <mytag>Hello World</mytag>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

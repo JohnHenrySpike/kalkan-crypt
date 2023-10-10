@@ -1,0 +1,40 @@
+name: PhpUnit
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Copy kalkancrypt.so to project root
+        run: cp ~/projects/KalkanCrypt/kalkancrypt.so ./
+
+      - name: Build docker image
+        run: make build
+
+      - name: Install dependencies
+        run: make composer_install
+
+  test:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - name: Run test suite
+        run: |
+          make test > test.log && \
+          cat test.log
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Test.log
+          path: ./test.log

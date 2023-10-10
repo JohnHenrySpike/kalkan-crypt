@@ -1,0 +1,35 @@
+{
+    "name": "johnhenryspike/kalkancrypt",
+    "description": "KalkanCrypt wrapper",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "KalkanCrypt\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "JohnHenrySpike",
+            "email": "JohnHenrySpike@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "ext-kalkancrypt": "^1.1.1",
+        "ext-openssl": "*",
+        "ext-dom": "*",
+        "ext-soap": "*"
+    },
+    "config":{
+        "platform": {
+            "ext-kalkancrypt": "1.1.1"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10"
+    },
+    "scripts": {
+        "test": "phpunit --testdox --testdox-text testdox.txt --display-errors"
+    }
+}
