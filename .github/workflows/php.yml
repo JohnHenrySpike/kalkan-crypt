@@ -36,7 +36,7 @@ jobs:
 
       - name: Run test suite sys_has_reg_certs
         run: |
-          make test-with-ca-cert-load > test2.log && \
+          make test_with_ca_cert_load > test2.log && \
           cat test.log
 
       - uses: actions/upload-artifact@v3
