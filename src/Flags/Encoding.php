@@ -1,9 +1,11 @@
 <?php
 namespace KalkanCrypt\Flags;
 
+use KalkanCrypt\Adapter;
+
 enum Encoding: int
 {
-    case DER  = 0x101;
-    case PEM  = 0x102;
-    case B64  = 0x104;
+    case DER  = Adapter::KC_CERT_DER;
+    case PEM  = Adapter::KC_CERT_PEM;
+    case B64  = Adapter::KC_CERT_B64;
 }

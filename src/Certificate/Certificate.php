@@ -3,6 +3,7 @@
 namespace KalkanCrypt\Certificate;
 
 use Exception;
+use KalkanCrypt\Exception\AdapterException;
 use KalkanCrypt\Flags\CertType;
 use KalkanCrypt\Utils;
 use function openssl_x509_parse;
@@ -20,11 +21,36 @@ class Certificate
     private string $pem = "";
     private ?string $realPath;
 
+    /**
+     * @throws Exception
+     */
     private function __construct(string $raw, ?string $realPath = null)
     {
         $this->raw = $raw;
         $this->realPath = $realPath;
         $this->parseCert();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function validate(): void
+    {
+        $this->validateDate();
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function validateDate(): void
+    {
+        $today = time();
+        if ($this->getValidFromTS() > $today){
+            throw new Exception('Cert valid date has not arrived');
+        }
+        if ($this->getValidToTS() < $today){
+            throw new Exception('Cert valid date has passed'.print_r($this->getInfo(), true));
+        }
     }
 
     /**
@@ -54,8 +80,11 @@ class Certificate
         if (ord($this->raw) == self::DER){
             $this->raw = Utils::der2pem($this->raw);
         }
-        if (!$this->info = openssl_x509_parse(openssl_x509_read($this->raw))){
-            throw new Exception("ERROR: Unable to parse cert! \nMESSAGE: ".openssl_error_string());
+        $parse = openssl_x509_parse(openssl_x509_read($this->raw));
+        if (!$parse){
+            throw new Exception("ERROR: Unable to parse cert $this->realPath \nMESSAGE: ".openssl_error_string());
+        } else {
+            $this->info = $parse;
         }
 
         if (isset($this->info['name'])){
@@ -67,7 +96,7 @@ class Certificate
 
         if (!openssl_x509_export($this->raw, $this->pem, false)){
             throw new Exception("Unable to export cert");
-        };
+        }
         if ($this->type != CertType::USER && !$this->isRootCert()){
             $this->type = CertType::INTERMEDIATE;
         }
@@ -78,6 +107,9 @@ class Certificate
         fwrite(fopen($this->path, "w"), $this->raw);
     }
 
+    /**
+     * @throws AdapterException
+     */
     public function getKalkanCert(): KalkanCert
     {
         return new KalkanCert($this->type, $this->raw);
@@ -148,12 +180,20 @@ class Certificate
         return $this->info['extensions']['authorityInfoAccess']??null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function getAuthorityUrl(): ?string
     {
         $url = null;
         if (!$this->isRootCert()){
-            $str = explode("\n", $this->getAuthorityInfoAccess())[0];
-            $url = substr($str,strpos($str, ":") + 1, strlen($str));
+            $matches = [];
+            preg_match_all(
+                '/(http[s]?:\/\/.*\.(?:cer|crt))/',
+                $this->getAuthorityInfoAccess(),
+                $matches, PREG_SET_ORDER);
+            if (empty($matches)) throw new Exception('Not found url in authorityInfoAccess');
+            return $matches[0][0];
         }
         return trim($url);
     }

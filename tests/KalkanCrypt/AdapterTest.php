@@ -59,7 +59,7 @@ class AdapterTest extends TestCase
     public function testLoadKeyStore(){
         $this->adapter->loadKeyStore(
             Adapter::KCST_PKCS12,
-            $this->getStorePath('GOST512_first_director_valid.p12'),
+            $this->getFixtureFullPath('gost2015/GOST512_first_director_valid.p12'),
             'Qwerty12',
             'test_first_director_valid'
         );
@@ -160,11 +160,6 @@ class AdapterTest extends TestCase
     private function getKeyPath(string $name): bool|string
     {
         return $this->getFixtureFullPath('CaCerts/'.$name);
-    }
-
-    private function getStorePath(string $name): bool|string
-    {
-        return $this->getFixtureFullPath('gost2015/'.$name);
     }
 
     private function getFixtureFullPath(string $fixtureName): false|string

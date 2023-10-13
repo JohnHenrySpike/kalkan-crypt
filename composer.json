@@ -30,6 +30,7 @@
         "phpunit/phpunit": "^10"
     },
     "scripts": {
-        "test": "phpunit --testdox --testdox-text testdox.txt --display-errors"
+        "test": "phpunit --testdox --display-errors tests/KalkanCrypt",
+        "sys_has_reg_certs": "phpunit --testdox --display-errors tests/certs_registered"
     }
 }

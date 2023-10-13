@@ -11,12 +11,19 @@ class KalkanCert
 {
     private string $cert;
     private array $ar_cert;
+
+    /**
+     * @throws AdapterException
+     */
     public function __construct(private readonly CertType $type, string $cert)
     {
         $this->cert = $cert;
         $this->loadProps();
     }
 
+    /**
+     * @throws AdapterException
+     */
     public static function load(CertType $type, string $cert): KalkanCert
     {
         return new self($type, $cert);
@@ -108,14 +115,4 @@ class KalkanCert
     {
         return substr($attr, strpos($attr, "=") + 1); //, strlen($attr)
     }
-
-    /*
-    [KEY_USAGE] => keyUsage=keyCertSign cRLSign
-    [EXT_KEY_USAGE] =>
-    [ISSUER_DN] => CN = НЕГІЗГІ КУӘЛАНДЫРУШЫ ОРТАЛЫҚ (GOST), O = РМК «МЕМЛЕКЕТТІК ТЕХНИКАЛЫҚ ҚЫЗМЕТ», C = KZ
-    [SUBJECT_DN] => CN = НЕГІЗГІ КУӘЛАНДЫРУШЫ ОРТАЛЫҚ (GOST), O = РМК «МЕМЛЕКЕТТІК ТЕХНИКАЛЫҚ ҚЫЗМЕТ», C = KZ
-    [SIGNATURE_ALG] => signatureAlgorithm=GOST 34.311-95 with GOST 34.310-2004(1.2.398.3.10.1.1.1.2)
-    [POLICIES_ID] => certificatePolicies=1.2.398.3.1.2
-    */
-
 }

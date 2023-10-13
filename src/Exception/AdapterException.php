@@ -1,8 +1,9 @@
 <?php
 namespace KalkanCrypt\Exception;
+use Exception;
 use Throwable;
 
-class AdapterException extends \Exception
+class AdapterException extends Exception
 {
     public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
     {

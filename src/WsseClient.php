@@ -2,10 +2,13 @@
 namespace KalkanCrypt;
 
 use DOMDocument;
+use DOMElement;
+use KalkanCrypt\Exception\AdapterException;
 use SoapClient;
+use SoapVar;
 
 /**
- * @method SendMessage(\SoapVar $param)
+ * @method SendMessage(SoapVar $param)
  */
 class WsseClient extends SoapClient
 {
@@ -21,6 +24,9 @@ class WsseClient extends SoapClient
         parent::__construct($wsdl, $options);
     }
 
+    /**
+     * @throws AdapterException
+     */
     public function __doRequest(string $request, string $location, string $action, int $version, bool $oneWay = false): ?string
     {
         $request = $this->signXml($request);
@@ -31,6 +37,7 @@ class WsseClient extends SoapClient
      * Add id attribute to body and sign
      * @param string $xml
      * @return string
+     * @throws AdapterException
      */
     private function signXml(string $xml): string
     {
@@ -38,11 +45,12 @@ class WsseClient extends SoapClient
         $doc = new DomDocument();
 
         $doc->loadXML($xml);
+        /** @var DOMElement $body */
         $body = $doc->getElementsByTagName('Body')->item(0);
         $body->setAttribute(self::ID_ATTR_NAME, $id);
         $body->setAttributeNS(self::XML_NS,'xmlns:wsu', self::WSU_NS);
         $unsigned_xml = $doc->C14N();
 
-        return $this->provider->signWSSE($unsigned_xml, $id)->getSignedData();
+        return $this->provider->signWSSE($unsigned_xml, $id);
     }
 }

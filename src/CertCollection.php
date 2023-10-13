@@ -39,6 +39,16 @@ class CertCollection
         return $this->certs[$key] ?? null;
     }
 
+    public function hasItem($key): bool
+    {
+        return in_array($key, $this->certs);
+    }
+
+    public function count(): int
+    {
+        return count($this->certs);
+    }
+
     /**
      * @return Certificate[]
      */

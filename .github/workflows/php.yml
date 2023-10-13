@@ -29,12 +29,19 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Run test suite
+      - name: Run test suite base
         run: |
           make test > test.log && \
+          cat test.log
+
+      - name: Run test suite sys_has_reg_certs
+        run: |
+          make test-with-ca-cert-load > test2.log && \
           cat test.log
 
       - uses: actions/upload-artifact@v3
         with:
           name: Test.log
-          path: ./test.log
+          path: |
+            ./test.log
+            ./test2.log

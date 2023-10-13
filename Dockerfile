@@ -7,14 +7,14 @@ RUN apt-get update && \
       git \
       libzip-dev \
       zip \
-    && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install soap zip
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 COPY kalkancrypt.so kalkancrypt.so
-RUN mv kalkancrypt.so $(php-config --extension-dir)/kalkancrypt.so &&\
+RUN mv kalkancrypt.so $(php-config --extension-dir)/kalkancrypt.so && \
     echo "extension=kalkancrypt" >> $(php-config  --ini-dir)/kalkancrypt.ini
+RUN mkdir -p /usr/local/share/ca-certificates/extra
 
 WORKDIR /app

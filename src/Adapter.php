@@ -98,6 +98,18 @@ class Adapter{
     const KC_PROXY_AUTH                     =	0x00004000; //	Прокси-сервер требует авторизацию (логин/пароль)
     const KC_IN_FILE                        =	0x00008000; //	Использовать, если параметр inData/outData содержит абсолютный путь к файлу.
 
+    const XML_INCL_C14N                     =   0x01000001;
+    const XML_INCL_C14NCOMMENT              =   0x01000002;
+    const XML_INCL_C14N11                   =   0x01000004;
+    const XML_INCL_C14N11COMMENT            =   0x01000008;
+    const XML_EXCL_C14N                     =   0x01000010;
+    const XML_EXCL_C14NCOMMENT              =   0x01000020;
+    const XMLC_INCL_C14N                    =   0x01000040;
+    const XMLC_INCL_C14NCOMMENT             =   0x01000080;
+    const XMLC_INCL_C14N11                  =   0x01000100;
+    const XMLC_INCL_C14N11COMMENT           =   0x01000200;
+    const XMLC_EXCL_C14N                    =   0x01000400;
+    const XMLC_EXCL_C14NCOMMENT             =   0x01000800;
 
     const KC_NOCHECKCERTTIME                =	0x00010000; //	Не проверять срок действия сертификата при построении цепочки до корневого (для проверки старых подписей с просроченным сертификатом)
     const KC_HASH_SHA256                    = 	0x00020000; //	Алгоритм хеширования sha256

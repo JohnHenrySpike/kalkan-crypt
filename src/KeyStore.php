@@ -15,15 +15,24 @@ class KeyStore
      * @throws AdapterException
      * @throws Exception
      */
-    public function __construct(private string $path, private string $password, private StorageType $storageType = StorageType::PKCS12)
+    private function __construct(private string $path, private string $password, private StorageType $storageType = StorageType::PKCS12)
     {
-        if (!file_exists($path)){
-            throw new Exception("File not exists");
-        }
         $a = Adapter::getInstance();
         $a->loadKeyStore($storageType->value, $path, $password);
         $this->cert = Certificate::loadFromString($a->exportCertFromStore());
         $a->destroy();
+    }
+
+    /**
+     * @throws AdapterException
+     * @throws Exception
+     */
+    public static function load(string $path, string $password, StorageType $storageType = StorageType::PKCS12): KeyStore
+    {
+        if (!file_exists($path)){
+            throw new Exception("File $path not exists");
+        }
+        return new self($path, $password, $storageType);
     }
 
     public function getPath(): string

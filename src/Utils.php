@@ -6,13 +6,13 @@ class Utils
 {
     static function der2pem($der_data): string
     {
-        $pem = chunk_split(base64_encode($der_data), 64, "\n");
+        $pem = chunk_split(base64_encode($der_data), 64);
         return "-----BEGIN CERTIFICATE-----\n".$pem."-----END CERTIFICATE-----\n";
     }
 
     static function der2pem2($der_data): string
     {
-        return chunk_split(base64_encode($der_data), 64,);
+        return chunk_split(base64_encode($der_data), 64);
     }
     static function pem2der($pem_data): bool|string
     {
