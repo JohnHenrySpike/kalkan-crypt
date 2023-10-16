@@ -31,6 +31,6 @@
     },
     "scripts": {
         "test": "phpunit --testdox --display-errors tests/KalkanCrypt",
-        "sys_has_reg_certs": "phpunit --testdox --display-errors tests/certs_registered"
+        "test-with-certs": "phpunit --testdox --display-errors tests/certs_registered"
     }
 }

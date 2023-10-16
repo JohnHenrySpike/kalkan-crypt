@@ -15,6 +15,7 @@ class Chain {
 
     private Closure $certLoader;
 
+    private function __construct(){}
     /**
      * Initializer
      *
