@@ -2,9 +2,9 @@ name: PhpUnit
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "dev" ]
 
 permissions:
   contents: read
@@ -36,12 +36,12 @@ jobs:
 
       - name: Run test suite sys_has_reg_certs
         run: |
-          make test_with_ca_cert_load > test2.log && \
-          cat test2.log
+          make test-with-certs > test-with-certs.log && \
+          cat test-with-certs.log
 
       - uses: actions/upload-artifact@v3
         with:
-          name: Test.log
+          name: Tests_logs
           path: |
             ./test.log
-            ./test2.log
+            ./test-with-certs.log

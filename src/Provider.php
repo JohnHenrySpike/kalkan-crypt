@@ -12,6 +12,8 @@ class Provider
 
     private bool $isAdapterFilled = false;
 
+    private function __construct(){}
+
     /**
      * @throws Exception
      */

@@ -7,9 +7,6 @@ use KalkanCrypt\Exception\AdapterException;
 use SoapClient;
 use SoapVar;
 
-/**
- * @method SendMessage(SoapVar $param)
- */
 class WsseClient extends SoapClient
 {
     const ID_ATTR_NAME = "Id";
