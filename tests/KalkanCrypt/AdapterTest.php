@@ -93,18 +93,25 @@ class AdapterTest extends TestCase
     }
 
     #[Depends('testLoadCaCertFromFile')]
-    public function testValidateCert(){
-        $validate_info = $this->adapter->validateCert(self::$user_cert, Adapter::KC_NOCHECKCERTTIME);
+    public function testBasicValidateCert(){
+        $validate_info = $this->adapter->validateCert(self::$user_cert);
         $this->assertStringContainsString("Verify chain and certificates: - OK", $validate_info["info"]);
+    }
 
+    #[Depends('testLoadCaCertFromFile')]
+    public function testOscpValidateCert(){
         $validPath = "http://test.pki.gov.kz/ocsp/";
-        $validate_info = $this->adapter->validateCert(self::$user_cert, Adapter::KC_NOCHECKCERTTIME, Adapter::KC_USE_OCSP, $validPath);
+        $validate_info = $this->adapter->validateCert(self::$user_cert, Adapter::KC_USE_OCSP, $validPath, Adapter::KC_GET_OCSP_RESPONSE);
         $this->assertStringContainsString("Verify chain and certificates: - OK", $validate_info["info"]);
         $this->assertStringContainsString("This Update:", $validate_info["info"]);
+        $this->assertStringContainsString("Cert Status: good", $validate_info["OCSP_Response"]);
+    }
 
+    #[Depends('testLoadCaCertFromFile')]
+    public function testCrlValidateCert(){
         $this->markTestIncomplete("need add crl file");
         $validPath = $this->getFixtureFullPath('');
-        $validate_info = $this->adapter->validateCert(self::$user_cert, Adapter::KC_NOCHECKCERTTIME, Adapter::KC_USE_CRL, $validPath);
+        $validate_info = $this->adapter->validateCert(self::$user_cert,Adapter::KC_USE_CRL, $validPath);
         $this->assertStringContainsString("Verify chain and certificates: - OK", $validate_info["info"]);
         $this->assertStringContainsString("This Update:", $validate_info["info"]);
     }

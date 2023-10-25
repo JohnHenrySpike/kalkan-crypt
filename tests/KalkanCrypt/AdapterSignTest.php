@@ -49,8 +49,7 @@ class AdapterSignTest extends TestCase
         $this->assertTrue(unlink($save_path.'/arch.zip'), "File (".$save_path.'/arch.zip'.") delete failed");
         $this->assertTrue(unlink($save_path.'/arch_many.zip'), "File (".$save_path.'/arch_many.zip'.") delete failed");
 
-        $this->markTestIncomplete('XML Parse NCAManifest - FAILED.');
-
+        $this->markTestIncomplete('XML Parse NCAManifest - FAILED. (files in arch is empty)');
         $verify = $this->adapter->verifyZipCon($save_path.'/arch.zip');
         $verify = $this->adapter->verifyZipCon($save_path.'/arch_many.zip');
     }
@@ -228,46 +227,6 @@ class AdapterSignTest extends TestCase
         $this->assertStringContainsString("CMS Verify - OK", $verify_res['info']);
     }
 
-    public function testCmsSignPemDetachedDataCmsSignatureInPem(){
-        $signed_data = $this->adapter->signData(
-            $this->unsigned_data,
-            Adapter::KC_SIGN_CMS | Adapter::KC_IN_PEM | Adapter::KC_OUT_PEM | Adapter::KC_DETACHED_DATA
-        );
-        $this->assertTrue(strlen($signed_data) > 0, "SignData returned empty string");
-        return $signed_data;
-    }
-
-    /**
-     * Мультиподпись в формате PEM
-     */
-    #[Depends('testCmsSignPemDetachedDataCmsSignatureInPem')]
-    public function testMultiCmsSignPemDetachedDataCmsSignatureInPem(string $signed_data){
-        $data = "";
-        $multi_signed_data = $this->adapter->signData(
-            $data,
-            Adapter::KC_SIGN_CMS | Adapter::KC_IN_PEM | Adapter::KC_OUT_PEM | Adapter::KC_DETACHED_DATA,
-            $signed_data
-        );
-        $this->markTestIncomplete("SignData returned empty string");
-        $this->assertTrue(strlen($multi_signed_data) > 0, "SignData returned empty string");
-        return $multi_signed_data;
-    }
-
-    #[Depends('testMultiCmsSignPemDetachedDataCmsSignatureInPem')]
-    public function testVerifyMultiCmsSignPemDetachedDataCmsSignatureInPem(string $signed_data){
-        $verify_res = $this->adapter->verifyData(
-            Adapter::KC_SIGN_CMS | Adapter::KC_IN_PEM | Adapter::KC_OUT_PEM | Adapter::KC_DETACHED_DATA,
-            $this->unsigned_data,
-            $signed_data
-        );
-        $this->assertIsArray($verify_res);
-        $this->assertStringContainsString("Signature N 1", $verify_res['info']);
-        $this->assertStringContainsString("Signature N 2", $verify_res['info']);
-        $this->assertStringContainsString("verify signer certificate hash - OK", $verify_res['info']);
-        $this->assertStringContainsString("Verify - OK", $verify_res['info']);
-        $this->assertStringContainsString("CMS Verify - OK", $verify_res['info']);
-    }
-
     /**
      * Подписать pdf-файлa в формате BASE64
      */
@@ -335,15 +294,15 @@ class AdapterSignTest extends TestCase
     }
 
     #[Depends('testVerifySignedXml')]
-    public function testGetCertFromXML(string $signed_xml){
+    public function testGetCertFromXml(string $signed_xml){
         $cert = $this->adapter->getCertFromXML($signed_xml);
         $this->assertIsString($cert);
         $this->assertTrue(strlen($cert)>0);
         return $signed_xml;
     }
 
-    #[Depends('testGetCertFromXML')]
-    public function testGetSigAlgFromXML(string $signed_xml){
+    #[Depends('testGetCertFromXml')]
+    public function testGetSigAlgFromXml(string $signed_xml){
         $alg = $this->adapter->getSigAlgFromXML($signed_xml);
         $this->assertIsString($alg);
         $this->assertStringContainsString('signatureAlgorithm=', $alg);

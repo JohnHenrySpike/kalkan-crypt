@@ -416,7 +416,7 @@ class Adapter{
      * @return array ["info" => "", "OCSP_Response" => ""]
      * @throws AdapterException
      */
-    public function validateCert(string $rawCert, int $flag, int $type = Adapter::KC_USE_NOTHING, string $path = ""): array
+    public function validateCert(string $rawCert, int $type = Adapter::KC_USE_NOTHING, string $path = "", int $flag = 0): array
     {
         $outInfo = "";
         $getOCSPResponse = "";
