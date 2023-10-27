@@ -55,7 +55,7 @@ class AdapterSignTest extends TestCase
         $save_path = self::getFixturePath();
         $this->assertTrue(unlink($save_path.'/arch.zip'), "File (".$save_path.'/arch.zip'.") delete failed");
         $this->assertTrue(unlink($save_path.'/arch_many.zip'), "File (".$save_path.'/arch_many.zip'.") delete failed");
-
+      
         $verify = $this->adapter->verifyZipCon($save_path.'/arch.zip');
         $verify = $this->adapter->verifyZipCon($save_path.'/arch_many.zip');
     }

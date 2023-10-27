@@ -26,7 +26,6 @@ class AdapterMultiSignTest extends TestCase
         );
         $this->adapter->loadCertFromFile(Adapter::KC_CERT_CA, self::getFixturePath('ca-certs/root_test_gost_2022.cer'));
         $this->adapter->loadCertFromFile(Adapter::KC_CERT_INTERMEDIATE, self::getFixturePath('/ca-certs/nca_gost2022_test.cer'));
-
         $signed_data = $this->adapter->signData(
             $this->unsigned_data,
             Adapter::KC_SIGN_CMS | Adapter::KC_IN_PEM | Adapter::KC_OUT_PEM | Adapter::KC_DETACHED_DATA
@@ -50,7 +49,6 @@ class AdapterMultiSignTest extends TestCase
         );
         $this->adapter->loadCertFromFile(Adapter::KC_CERT_CA, self::getFixturePath('ca-certs/root_test_gost_2022.cer'));
         $this->adapter->loadCertFromFile(Adapter::KC_CERT_INTERMEDIATE, self::getFixturePath('/ca-certs/nca_gost2022_test.cer'));
-
         $multi_signed_data = $this->adapter->signData(
             $this->unsigned_data,
             Adapter::KC_SIGN_CMS | Adapter::KC_IN_PEM | Adapter::KC_OUT_PEM | Adapter::KC_DETACHED_DATA,

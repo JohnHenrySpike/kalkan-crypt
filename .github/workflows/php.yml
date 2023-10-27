@@ -49,5 +49,5 @@ jobs:
           name: Tests_logs
           path: |
             ./test.log
-            ./test-with-certs.log
             ./test-perf.log
+            ./test-with-certs.log
