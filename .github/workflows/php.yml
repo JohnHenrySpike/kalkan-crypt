@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Copy kalkancrypt.so to project root
-        run: cp ~/projects/kalkan-crypt/kalkancrypt.so.82nts ./kalkancrypt.so
+        run: cp ~/projects/kalkan-crypt/kalkancrypt.so.82nts ./kalkancrypt.so.82nts
 
       - name: Build docker image
         run: make build
