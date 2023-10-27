@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class ProviderTest extends TestCase
 {
-    private string $key_path = __DIR__ . '/../fixtures/gost2015/GOST512_first_director_valid.p12';
+    private string $key_path = __DIR__ . '/../fixtures/storage/GOST512_first_director_valid.p12';
     private string $pass = 'Qwerty12';
     private Chain $chain;
 
@@ -23,9 +23,16 @@ class ProviderTest extends TestCase
         $this->assertStringStartsWith("-----BEGIN CMS-----", $sign);
     }
 
+    public function testSignDataWithTimeStamp()
+    {
+        $sign = Provider::init($this->chain, "http://test.pki.gov.kz/tsp/")->signData("Hello world", SignFlag::SIGN_CMS | SignFlag::OUT_PEM);
+        $this->assertStringStartsWith("-----BEGIN CMS-----", $sign);
+    }
+
     public function testSignXml()
     {
         $xml = '<root><signature></signature><data id="sign-this">Hello World</data></root>';
+
         $sign = Provider::init($this->chain)->signXML($xml, 'sign-this', 'signature');
         $this->assertStringContainsString("<ds:X509Certificate>", $sign);
     }
@@ -36,6 +43,7 @@ class ProviderTest extends TestCase
                     <Header></Header>
                     <Body id="sign-this">Hello World</Body>
                  </soap:Envelope>';
+
         $sign = Provider::init($this->chain)->signWSSE($wsse, 'sign-this');
         $this->assertStringContainsString("<ds:SignatureValue>", $sign);
     }

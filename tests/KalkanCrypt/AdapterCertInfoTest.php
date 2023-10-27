@@ -16,7 +16,7 @@ class AdapterCertInfoTest extends TestCase
         self::$adapter = Adapter::getInstance();
         self::$adapter->loadKeyStore(
             Adapter::KCST_PKCS12,
-            __DIR__ . '/../fixtures/gost2015/GOST512_first_director_valid.p12',
+            __DIR__ . '/../fixtures/storage/GOST512_first_director_valid.p12',
             'Qwerty12',
             'test_first_director_valid'
         );
@@ -125,11 +125,11 @@ class AdapterCertInfoTest extends TestCase
         $this->assertIsString(self::$adapter->getCertInfo(Adapter::KC_CERTPROP_OCSP, self::$cert));
     }
     public function testGetCertInfoGetCrl(){
-        $this->markTestIncomplete("SIGSEGV");
+        $this->markTestIncomplete("SIGSEGV [confirmed] https://forum.pki.gov.kz/t/php-sigsegv-kc-certprop-get-crl-kc-certprop-get-delta-crl/2484/5");
         $this->assertIsString(self::$adapter->getCertInfo(Adapter::KC_CERTPROP_GET_CRL, self::$cert));
     }
     public function testGetCertInfoDeltaCrl(){
-        $this->markTestIncomplete("SIGSEGV");
+        $this->markTestIncomplete("SIGSEGV [confirmed] https://forum.pki.gov.kz/t/php-sigsegv-kc-certprop-get-crl-kc-certprop-get-delta-crl/2484/5");
         $this->assertIsString(self::$adapter->getCertInfo(Adapter::KC_CERTPROP_GET_DELTA_CRL, self::$cert));
     }
 }

@@ -1,5 +1,5 @@
 .idea
 .phpunit.cache
 composer.lock
-kalkancrypt.so
+kalkancrypt.so*
 vendor

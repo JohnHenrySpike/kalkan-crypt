@@ -12,13 +12,13 @@ class ChainTest extends TestCase
 
     public function setUp(): void
     {
-        $this->keyStore = KeyStore::load(__DIR__ . '/../fixtures/gost2015/GOST512_first_director_valid.p12', 'Qwerty12');
+        $this->keyStore = KeyStore::load(__DIR__ . '/../fixtures/storage/GOST512_first_director_valid.p12', 'Qwerty12');
     }
 
     public function testFromFolder()
     {
         $this->assertTrue(
-            Chain::init($this->keyStore)->fromFolder(__DIR__ . '/../fixtures/CaCerts')->isReady()
+            Chain::init($this->keyStore)->fromFolder(__DIR__ . '/../fixtures/ca-certs')->isReady()
         );
     }
 
@@ -44,16 +44,16 @@ class ChainTest extends TestCase
     public function testFromCollection()
     {
         $collection = new CertCollection();
-        $collection->addItem(Certificate::loadFromPath(__DIR__ . '/../fixtures/CaCerts/nca_gost2022_test.cer'));
-        $collection->addItem(Certificate::loadFromPath(__DIR__ . '/../fixtures/CaCerts/root_test_gost_2022.cer'));
+        $collection->addItem(Certificate::loadFromPath(__DIR__ . '/../fixtures/ca-certs/nca_gost2022_test.cer'));
+        $collection->addItem(Certificate::loadFromPath(__DIR__ . '/../fixtures/ca-certs/root_test_gost_2022.cer'));
         $this->assertTrue(Chain::init($this->keyStore)->fromCollection($collection)->isReady());
     }
 
     public function testValidate()
     {
         $collection = new CertCollection();
-        $collection->addItem(Certificate::loadFromPath(__DIR__ . '/../fixtures/CaCerts/nca_gost2022_test.cer'));
-        $collection->addItem(Certificate::loadFromPath(__DIR__ . '/../fixtures/CaCerts/root_test_gost_2022.cer'));
+        $collection->addItem(Certificate::loadFromPath(__DIR__ . '/../fixtures/ca-certs/nca_gost2022_test.cer'));
+        $collection->addItem(Certificate::loadFromPath(__DIR__ . '/../fixtures/ca-certs/root_test_gost_2022.cer'));
         $chain = Chain::init($this->keyStore)->fromCollection($collection)->validate();
 
         $this->assertTrue($chain->isValid());

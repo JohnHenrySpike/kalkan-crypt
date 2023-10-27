@@ -14,7 +14,9 @@ composer_install: ## install dependencies for dev
 test: ## run tests case
 	$(DOCKER_RUN) $(IMAGE_NAME) composer run-script test
 test-with-certs: ## run tests case (ca certs loaded)
-	docker run -v ./:/app $(IMAGE_NAME) sh -c "cp -a tests/fixtures/CaCerts/*.crt /usr/local/share/ca-certificates/extra/ && update-ca-certificates && composer run-script test-with-certs"
+	docker run -v ./:/app $(IMAGE_NAME) sh -c "cp -a tests/fixtures/ca-certs/*.crt /usr/local/share/ca-certificates/extra/ && update-ca-certificates && composer run-script test-with-certs"
+test-perf: ## run performance tests case
+	$(DOCKER_RUN) $(IMAGE_NAME) composer run-script test-perf
 build: ## build image
 	docker build . -t $(IMAGE_NAME)
 
