@@ -17,15 +17,13 @@ class Chain {
 
     private function __construct(){}
     /**
-     * Initializer
+     * Chain initializer
      *
-     * For create chain use methods prefix"from" like:
-     *
-     * Chain::init($keyStore)->fromSystem()<br/>
-     * Chain::init($keyStore)->fromFolder("/path/to/folder/");<br/>
-     * Chain::init($keyStore)->fromCollection($collection)<br/>
-     * Chain::init($keyStore)->fromAuthInfo()<br/>
-     * Chain::init($keyStore)->fromUrl(['http//some.site/cert.crt', 'http//some2.site/cert2.crt'])<br/>
+     * Chain::init($keyStore)->fromSystem()<br/><br/>
+     * Chain::init($keyStore)->fromFolder("/path/to/folder/");<br/><br/>
+     * Chain::init($keyStore)->fromCollection($collection)<br/><br/>
+     * Chain::init($keyStore)->fromAuthInfo()<br/><br/>
+     * Chain::init($keyStore)->fromUrl(['http//some.site/cert.crt', 'http//some2.site/cert2.crt'])<br/><br/>
      *
      * @param KeyStore $keyStore
      * @return Chain

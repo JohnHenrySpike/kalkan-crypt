@@ -7,7 +7,7 @@ use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\DependsExternal;
 use PHPUnit\Framework\TestCase;
 
-class AdapterSignTest extends TestCase
+class AdapterWithCertsInSystemSignTest extends TestCase
 {
     private Adapter $adapter;
 
@@ -24,7 +24,7 @@ class AdapterSignTest extends TestCase
         $this->adapter->setTsaUrl('http://test.pki.gov.kz/tsp/');
         $this->adapter->loadKeyStore(
             Adapter::KCST_PKCS12,
-            self::getFixturePath('gost2015/GOST512_first_director_valid.p12'),
+            __DIR__.'/../fixtures/storage/GOST512_first_director_valid.p12',
             'Qwerty12',
             'test_first_director_valid'
         );
@@ -69,17 +69,5 @@ class AdapterSignTest extends TestCase
     public function tearDown(): void
     {
         $this->adapter->destroy();
-    }
-
-
-    /** Helper method
-     *
-     * @param string $fixtureName
-     * @return false|string
-     */
-    private static function getFixturePath(string $fixtureName = ""): false|string
-    {
-        $parts = [__DIR__, '..', 'fixtures', $fixtureName];
-        return realpath(implode('/', $parts));
     }
 }

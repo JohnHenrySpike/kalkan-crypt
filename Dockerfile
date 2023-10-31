@@ -12,7 +12,7 @@ RUN apt-get update && \
 RUN docker-php-ext-install soap zip
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-COPY kalkancrypt.so kalkancrypt.so
+COPY kalkancrypt.so.82nts kalkancrypt.so
 RUN mv kalkancrypt.so $(php-config --extension-dir)/kalkancrypt.so && \
     echo "extension=kalkancrypt" >> $(php-config  --ini-dir)/kalkancrypt.ini
 RUN mkdir -p /usr/local/share/ca-certificates/extra

@@ -22,5 +22,7 @@ interface SignFlag
     const HASH_SHA256             =   Adapter::KC_HASH_SHA256;
     const HASH_GOST95             =   Adapter::KC_HASH_GOST95;
     const GET_OCSP_RESPONSE       =   Adapter::KC_GET_OCSP_RESPONSE;
+    const HASH_GOST2015           =   Adapter::KC_HASH_GOST2015;
+
 
 }

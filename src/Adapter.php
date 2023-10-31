@@ -115,6 +115,7 @@ class Adapter{
     const KC_HASH_SHA256                    = 	0x00020000; //	Алгоритм хеширования sha256
     const KC_HASH_GOST95                    =	0x00040000; //	Алгоритм хеширования Gost34311_95
     const KC_GET_OCSP_RESPONSE              =	0x00080000; //	Вывести ответ от OCSP-сервиса
+    const KC_HASH_GOST2015                  =	0x00200000; //	Алгоритм хеширования GostR3411_2015_512
 
 
 

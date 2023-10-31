@@ -20,13 +20,12 @@ class AdapterMultiSignTest extends TestCase
         $this->adapter = Adapter::getInstance();
         $this->adapter->loadKeyStore(
             Adapter::KCST_PKCS12,
-            self::getFixturePath('gost2015/GOST512_first_director_valid.p12'),
+            self::getFixturePath('storage/GOST512_first_director_valid.p12'),
             'Qwerty12',
             'test_first_director_valid'
         );
-        $this->adapter->loadCertFromFile(Adapter::KC_CERT_CA, self::getFixturePath('CaCerts/root_test_gost_2022.cer'));
-        $this->adapter->loadCertFromFile(Adapter::KC_CERT_INTERMEDIATE, self::getFixturePath('/CaCerts/nca_gost2022_test.cer'));
-
+        $this->adapter->loadCertFromFile(Adapter::KC_CERT_CA, self::getFixturePath('ca-certs/root_test_gost_2022.cer'));
+        $this->adapter->loadCertFromFile(Adapter::KC_CERT_INTERMEDIATE, self::getFixturePath('/ca-certs/nca_gost2022_test.cer'));
         $signed_data = $this->adapter->signData(
             $this->unsigned_data,
             Adapter::KC_SIGN_CMS | Adapter::KC_IN_PEM | Adapter::KC_OUT_PEM | Adapter::KC_DETACHED_DATA
@@ -44,13 +43,12 @@ class AdapterMultiSignTest extends TestCase
         $this->adapter = Adapter::getInstance();
         $this->adapter->loadKeyStore(
             Adapter::KCST_PKCS12,
-            self::getFixturePath('gost2015/GOST512_employee_with_signatory_authority_valid.p12'),
+            self::getFixturePath('storage/GOST512_employee_with_signatory_authority_valid.p12'),
             'Qwerty12',
             'employee_with_signature'
         );
-        $this->adapter->loadCertFromFile(Adapter::KC_CERT_CA, self::getFixturePath('CaCerts/root_test_gost_2022.cer'));
-        $this->adapter->loadCertFromFile(Adapter::KC_CERT_INTERMEDIATE, self::getFixturePath('/CaCerts/nca_gost2022_test.cer'));
-
+        $this->adapter->loadCertFromFile(Adapter::KC_CERT_CA, self::getFixturePath('ca-certs/root_test_gost_2022.cer'));
+        $this->adapter->loadCertFromFile(Adapter::KC_CERT_INTERMEDIATE, self::getFixturePath('/ca-certs/nca_gost2022_test.cer'));
         $multi_signed_data = $this->adapter->signData(
             $this->unsigned_data,
             Adapter::KC_SIGN_CMS | Adapter::KC_IN_PEM | Adapter::KC_OUT_PEM | Adapter::KC_DETACHED_DATA,

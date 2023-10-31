@@ -23,12 +23,12 @@ class AdapterSignTest extends TestCase
         $this->adapter->setTsaUrl('http://test.pki.gov.kz/tsp/');
         $this->adapter->loadKeyStore(
             Adapter::KCST_PKCS12,
-            self::getFixturePath('gost2015/GOST512_first_director_valid.p12'),
+            self::getFixturePath('storage/GOST512_first_director_valid.p12'),
             'Qwerty12',
             'test_first_director_valid'
         );
-        $this->adapter->loadCertFromFile(Adapter::KC_CERT_CA, self::getFixturePath('CaCerts/root_test_gost_2022.cer'));
-        $this->adapter->loadCertFromFile(Adapter::KC_CERT_INTERMEDIATE, self::getFixturePath('/CaCerts/nca_gost2022_test.cer'));
+        $this->adapter->loadCertFromFile(Adapter::KC_CERT_CA, self::getFixturePath('ca-certs/root_test_gost_2022.cer'));
+        $this->adapter->loadCertFromFile(Adapter::KC_CERT_INTERMEDIATE, self::getFixturePath('/ca-certs/nca_gost2022_test.cer'));
     }
 
     public function testSignZipCon(){
@@ -40,6 +40,13 @@ class AdapterSignTest extends TestCase
         $this->adapter->signZipCon($many_files, 'arch_many', $save_path);
         $this->assertEquals(0, $this->adapter->getLastError());
 
+        /*
+         * remove 3 lines below when error fixed
+        */
+        $this->assertTrue(unlink($save_path.'/arch.zip'), "File (".$save_path.'/arch.zip'.") delete failed");
+        $this->assertTrue(unlink($save_path.'/arch_many.zip'), "File (".$save_path.'/arch_many.zip'.") delete failed");
+        $this->markTestIncomplete('ERROR (files in arch is empty) [confirmed] https://forum.pki.gov.kz/t/php-kalkancrypt-zipconsign-sozdaet-arhiv-s-pustymi-fajlami/2485/4');
+
         return $save_path;
     }
 
@@ -48,8 +55,7 @@ class AdapterSignTest extends TestCase
         $save_path = self::getFixturePath();
         $this->assertTrue(unlink($save_path.'/arch.zip'), "File (".$save_path.'/arch.zip'.") delete failed");
         $this->assertTrue(unlink($save_path.'/arch_many.zip'), "File (".$save_path.'/arch_many.zip'.") delete failed");
-
-        $this->markTestIncomplete('XML Parse NCAManifest - FAILED. (files in arch is empty)');
+      
         $verify = $this->adapter->verifyZipCon($save_path.'/arch.zip');
         $verify = $this->adapter->verifyZipCon($save_path.'/arch_many.zip');
     }
@@ -258,15 +264,15 @@ class AdapterSignTest extends TestCase
         $this->assertTrue(unlink($signed_file_path), "File (".$signed_file_path.")delete failed");
     }
 
-    public function testSignHash(){
+
+    public function testSignHashGost2015(){
         $hashed_data = $this->adapter->hashData(
             $this->unsigned_data,
-            Adapter::KC_OUT_BASE64, "sha256");
+            Adapter::KC_OUT_BASE64 | Adapter::KC_HASH_GOST2015);
 
-        $this->markTestIncomplete("ERROR 0x8f0004b: Sign Hash - input hash size error");
         $signed_hash = $this->adapter->signHash(
             $hashed_data,
-            Adapter::KC_SIGN_CMS | Adapter::KC_IN_BASE64 | Adapter::KC_OUT_PEM, "sha256"
+            Adapter::KC_SIGN_CMS | Adapter::KC_IN_BASE64 | Adapter::KC_OUT_PEM | Adapter::KC_HASH_GOST2015
         );
         $this->assertIsString($signed_hash);
         $this->assertTrue(strlen($signed_hash) > 0);

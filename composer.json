@@ -31,6 +31,7 @@
     },
     "scripts": {
         "test": "phpunit --testdox --display-errors tests/KalkanCrypt",
+        "test-perf": "phpunit --testdox --display-errors tests/performance",
         "test-with-certs": "phpunit --testdox --display-errors tests/certs_registered"
     }
 }

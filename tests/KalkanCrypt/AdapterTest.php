@@ -59,7 +59,7 @@ class AdapterTest extends TestCase
     public function testLoadKeyStore(){
         $this->adapter->loadKeyStore(
             Adapter::KCST_PKCS12,
-            $this->getFixtureFullPath('gost2015/GOST512_first_director_valid.p12'),
+            __DIR__ . "/../fixtures/storage/GOST512_first_director_valid.p12",
             'Qwerty12',
             'test_first_director_valid'
         );
@@ -80,7 +80,7 @@ class AdapterTest extends TestCase
     {
         $this->adapter->loadCertFromFile(
             Adapter::KC_CERT_INTERMEDIATE,
-            $this->getKeyPath('nca_gost2022_test.cer')
+            __DIR__ . '/../fixtures/ca-certs/nca_gost2022_test.cer'
         );
         $this->assertEquals(0, $this->adapter->getLastError());
     }
@@ -88,7 +88,7 @@ class AdapterTest extends TestCase
     #[Depends('testLoadIntermediateCertFromFile')]
     public function testLoadCaCertFromFile()
     {
-        $this->adapter->loadCertFromFile(Adapter::KC_CERT_CA, $this->getKeyPath('root_test_gost_2022.cer'));
+        $this->adapter->loadCertFromFile(Adapter::KC_CERT_CA, __DIR__ . '/../fixtures/ca-certs/root_test_gost_2022.cer');
         $this->assertEquals(0, $this->adapter->getLastError());
     }
 
@@ -109,42 +109,65 @@ class AdapterTest extends TestCase
 
     #[Depends('testLoadCaCertFromFile')]
     public function testCrlValidateCert(){
-        $this->markTestIncomplete("need add crl file");
-        $validPath = $this->getFixtureFullPath('');
+        $validPath = __DIR__.'/../fixtures/nca_gost_test_2022.crl';
         $validate_info = $this->adapter->validateCert(self::$user_cert,Adapter::KC_USE_CRL, $validPath);
         $this->assertStringContainsString("Verify chain and certificates: - OK", $validate_info["info"]);
-        $this->assertStringContainsString("This Update:", $validate_info["info"]);
     }
 
     public function testLoadCertFromBuffer()
     {
-        $this->markTestIncomplete('SIGSEGV');
-        $certString = file_get_contents($this->getKeyPath('nca_gost_test.crt'));
+        $this->markTestIncomplete('SIGSEGV [confirmed] https://forum.pki.gov.kz/t/oshibka-sigsegv-v-kalcancrypt-php-pri-vyzove-x509loadcertificatefrombuffer/2391/3');
+        $certString = file_get_contents(__DIR__ . "/../fixtures/ca-certs/nca_gost_test.crt");
         $this->adapter->loadCertFromBuffer($certString, Adapter::KC_CERT_PEM);
     }
 
     #[Depends('testLoadCaCertFromFile')]
-    public function testHashData(){
-        $data = "Hello World";
-        $file = realpath(__DIR__ . '/../fixtures/application.pdf');
-
-        $hash = $this->adapter->hashData($data, Adapter::KC_OUT_BASE64, 'sha256');
+    public function testHashDataSha256Alias(){
+        $hash = $this->adapter->hashData("Hello World", Adapter::KC_OUT_BASE64, 'sha256');
         $this->assertIsString($hash);
         $this->assertTrue(strlen($hash)>0);
+    }
 
-        $hash = $this->adapter->hashData($data, Adapter::KC_OUT_BASE64 | Adapter::KC_HASH_SHA256);
+    #[Depends('testLoadCaCertFromFile')]
+    public function testHashDataSha256Flag(){
+        $hash = $this->adapter->hashData("Hello World", Adapter::KC_OUT_BASE64 | Adapter::KC_HASH_SHA256);
         $this->assertIsString($hash);
         $this->assertTrue(strlen($hash)>0);
+    }
 
-        $hash = $this->adapter->hashData($data, Adapter::KC_OUT_BASE64, 'Gost34311_95');
+    #[Depends('testLoadCaCertFromFile')]
+    public function testHashDataGost95Alias(){
+        $hash = $this->adapter->hashData("Hello World", Adapter::KC_OUT_BASE64, 'Gost34311_95');
         $this->assertIsString($hash);
         $this->assertTrue(strlen($hash)>0);
+    }
 
-        $hash = $this->adapter->hashData($data, Adapter::KC_OUT_BASE64 | Adapter::KC_HASH_GOST95);
+    #[Depends('testLoadCaCertFromFile')]
+    public function testHashDataGost95Flag(){
+        $hash = $this->adapter->hashData("Hello World", Adapter::KC_OUT_BASE64 | Adapter::KC_HASH_GOST95);
         $this->assertIsString($hash);
         $this->assertTrue(strlen($hash)>0);
+    }
 
-        $hash = $this->adapter->hashData($file, Adapter::KC_OUT_BASE64 | Adapter::KC_HASH_GOST95 | Adapter::KC_IN_FILE);
+    #[Depends('testLoadCaCertFromFile')]
+    public function testHashDataGost2015Alias(){
+        $hash = $this->adapter->hashData("Hello World", Adapter::KC_OUT_BASE64, 'GostR3411_2015_512');
+        $this->assertIsString($hash);
+        $this->assertTrue(strlen($hash)>0);
+    }
+
+    #[Depends('testLoadCaCertFromFile')]
+    public function testHashDataGost2015Flag(){
+        $hash = $this->adapter->hashData("Hello World", Adapter::KC_OUT_BASE64 | Adapter::KC_HASH_GOST2015);
+        $this->assertIsString($hash);
+        $this->assertTrue(strlen($hash)>0);
+    }
+
+    #[Depends('testLoadCaCertFromFile')]
+    public function testHashDataInFile(){
+        $hash = $this->adapter->hashData(
+            __DIR__ . '/../fixtures/application.pdf',
+            Adapter::KC_OUT_BASE64 | Adapter::KC_HASH_GOST95 | Adapter::KC_IN_FILE);
         $this->assertIsString($hash);
         $this->assertTrue(strlen($hash)>0);
     }
@@ -162,16 +185,5 @@ class AdapterTest extends TestCase
     public function tearDown(): void
     {
         $this->adapter->destroy();
-    }
-
-    private function getKeyPath(string $name): bool|string
-    {
-        return $this->getFixtureFullPath('CaCerts/'.$name);
-    }
-
-    private function getFixtureFullPath(string $fixtureName): false|string
-    {
-        $parts = [__DIR__, '..', 'fixtures', $fixtureName];
-        return realpath(implode('/', $parts));
     }
 }

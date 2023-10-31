@@ -15,7 +15,7 @@ class ChainTest extends TestCase
 
     public function setUp(): void
     {
-        $this->keyStore = KeyStore::load(__DIR__ . '/../fixtures/gost2015/GOST512_first_director_valid.p12', 'Qwerty12');
+        $this->keyStore = KeyStore::load(__DIR__ . '/../fixtures/storage/GOST512_first_director_valid.p12', 'Qwerty12');
     }
 
     public function testFromSystem()
