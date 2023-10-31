@@ -18,8 +18,6 @@ class Provider
 
     private function __construct(){}
 
-    private function __construct(){}
-
     /**
      * @throws Exception
      */
