@@ -35,7 +35,7 @@ class ProviderPerformanceTest extends TestCase
             .round($eta, 3)
             ." seconds  ["
             .round($signs/$eta, 1)
-            ." signs/sec]\n");
+            ." signs/sec]");
         $this->assertLessThan(5, $eta);
     }
 
@@ -54,7 +54,7 @@ class ProviderPerformanceTest extends TestCase
             .round($eta, 3)
             ." seconds  ["
             .round($signs/$eta, 1)
-            ." signs/sec]\n");
+            ." signs/sec]");
         $this->assertLessThan(20, $eta);
     }
 
@@ -75,7 +75,7 @@ class ProviderPerformanceTest extends TestCase
             .round($eta, 3)
             ." seconds  ["
             .round($signs/$eta, 1)
-            ." signs/sec]\n");
+            ." signs/sec]");
         $this->assertLessThan(20, $eta);
     }
 
@@ -99,7 +99,7 @@ class ProviderPerformanceTest extends TestCase
             .round($eta, 3)
             ." seconds  ["
             .round($signs/$eta, 1)
-            ." signs/sec]\n");
+            ." signs/sec]");
         $this->assertLessThan(20, $eta);
     }
 }
