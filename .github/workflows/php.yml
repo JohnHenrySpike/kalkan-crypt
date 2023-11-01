@@ -41,8 +41,9 @@ jobs:
 
       - name: Run test suite performance
         run: |
-          make test-perf > test-perf.log && \
-          cat test-perf.log
+          make test-perf > perf_result.txt 2>&1 > test-perf.log && \
+          cat test-perf.log && \
+          cat perf_result.txt
 
       - uses: actions/upload-artifact@v3
         with:
@@ -51,3 +52,4 @@ jobs:
             ./test.log
             ./test-perf.log
             ./test-with-certs.log
+            ./perf_result.txt

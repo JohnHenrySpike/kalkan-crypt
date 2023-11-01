@@ -116,7 +116,6 @@ class AdapterSignTest extends TestCase
 
     #[Depends('testSignStringDataCmsSignatureInPemWithTimestamp')]
     public function testVerifySignedStringDataCmsSignatureInPemWithTimestamp($signed_data){
-        $this->adapter->setTsaUrl('http://test.pki.gov.kz/tsp/');
         $verify_res = $this->adapter->verifyData(
             Adapter::KC_SIGN_CMS | Adapter::KC_IN_PEM | Adapter::KC_OUT_PEM | Adapter::KC_WITH_TIMESTAMP,
             $this->unsigned_data,
