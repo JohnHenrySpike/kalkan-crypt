@@ -1,5 +1,9 @@
 ## KalkanCrypt wrapper
 [![PhpUnit](https://github.com/JohnHenrySpike/kalkan-crypt/actions/workflows/php.yml/badge.svg)](https://github.com/JohnHenrySpike/kalkan-crypt/actions/workflows/php.yml)
+![Packagist Version](https://img.shields.io/packagist/v/JohnHenrySpike/kalkancrypt)
+![Packagist Downloads](https://img.shields.io/packagist/dt/johnhenryspike/kalkancrypt)
+![Packagist Stars](https://img.shields.io/packagist/stars/johnhenryspike/kalkancrypt)
+
 
 Wrapper for cryptographic library KalkanCrypt(PHP)
 
